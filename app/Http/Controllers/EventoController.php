@@ -23,8 +23,10 @@ class EventoController extends Controller
         $evento = [
             'title' => $request->title,
             'descripcion' => $request->descripcion,
-            'start' => $request->start,
-            'end' => $request->end,
+            'start' => $request->start . ' ' . $request->hour,
+            'end' => $request->start . ' ' . $request->hour,
+            'hour' => $request->hour == '' ? '00:00' : $request->hour,
+            'dayHour' => $request->start . ' ' . $request->hour,
             'updated_at' => null
         ];
         
@@ -32,6 +34,7 @@ class EventoController extends Controller
         {
             Evento::create($evento);
             return json_encode(['Creo']);
+            // return json_encode(['Creo' => $evento]);
         }
         catch(\Exception $ex)
         {
@@ -72,8 +75,6 @@ class EventoController extends Controller
         {
             return json_encode(['Error' => $ex->getMessage()]);
         }
-
-       
     }
 
     public function destroy($id)

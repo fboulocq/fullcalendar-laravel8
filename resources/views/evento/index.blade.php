@@ -19,7 +19,7 @@
         </div>
         <div class="modal-body">
           {{-- Formulario con el evento --}}
-          <form>
+          <form id="formEventos">
             <input type="hidden" id="id" value=""/>  
             <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}" />
             {{-- Título --}}
@@ -35,12 +35,24 @@
             {{-- Inicio --}}
             <div class="form-group">
                 <label for="">Fecha Inicio</label>
-                <input class="form-control" type="date" id="start" placeholder="Fecha Inicio">
+                <input class="form-control" type="text" id="start" placeholder="Fecha Inicio">
             </div>
             {{-- Fin --}}
             <div class="form-group">
                 <label for="">Fecha Fin</label>
-                <input class="form-control" type="date" id="end" placeholder="Fecha Inicio">
+                <input class="form-control" type="text" id="end" placeholder="Fecha Inicio">
+            </div>
+
+            {{-- Horario --}}
+            <div class="form-group">
+              <label for="">Hora</label>
+              <input class="form-control" type="text" id="hour" placeholder="Horario">
+            </div>
+
+            {{-- Día y hora completo --}}
+            <div class="form-group">
+              <label for="">Día y Hora completo</label>
+              <input class="form-control" type="text" id="dayHour" placeholder="Día completo">
             </div>
 
           </form>

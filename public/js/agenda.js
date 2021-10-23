@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     
-    let formulario = document.querySelector("form");
+    let formulario = document.querySelector("#formEventos");
     let btnGuardar = document.querySelector("#btnGuardar");
     let btnEliminar = document.querySelector("#btnEliminar");
     let btnModificar = document.querySelector("#btnModificar");
@@ -31,24 +31,45 @@ document.addEventListener('DOMContentLoaded', function() {
     let calendarEl = document.getElementById('agenda');
     
     let calendar = new FullCalendar.Calendar(calendarEl, {
-        
-        initialView: 'dayGridMonth',
         locale:"es",
+        initialView: 'timeGridWeek', //Vista por defecto
+        displayEventTime: true,
         headerToolbar: {
             left:'prev,next today',
             center:'title',
-            right:'dayGridMonth,timeGridWeek,listWeek'
+            // right:'dayGridMonth,timeGridWeek,listWeek'
+            right:'timeGridWeek,listWeek'
         },
+
+        //Horarios mínimos y máximos
+        slotMinTime: '08:00:00',
+        slotMaxTime: '21:00:00',
+
+
         //Trae todos los eventos
-        events: '/evento/listado',
+        // events: '/evento/listado',
+        eventSources: {
+            url: rutas.listado,
+            method: 'POST',
+            extraParams: {
+                _token: token
+            },
+        },
+        
+
         //Cuando hace click en una fecha
         dateClick: function(info)
         {
             formulario.reset();
+            console.log(info.dateStr);
+            //Obtengo el día y la hora en la vista Semana
+            let dia = info.dateStr.substr(0, 10);
+            let hora = info.dateStr.substr(11, 5);
 
-            //Obtengo la info del día
-            formulario.start.value=info.dateStr;
-            formulario.end.value=info.dateStr;
+            formulario.start.value=dia;
+            formulario.end.value=dia;
+            formulario.hour.value = hora;
+            formulario.dayHour.value = info.dateStr;
 
             //Cuando da click en un día abro el modal
             $("#evento").modal("show");
@@ -67,6 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 formulario.descripcion.value = respuesta.descripcion;
                 formulario.start.value = respuesta.start;
                 formulario.end.value = respuesta.end;
+                formulario.hour.value = respuesta.hour;
+                formulario.dayHour.value = respuesta.dayHour;
 
                 $("#evento").modal("show");
 
@@ -85,7 +108,10 @@ document.addEventListener('DOMContentLoaded', function() {
             'title': formulario.title.value,
             'descripcion': formulario.descripcion.value,
             'start': formulario.start.value,
-            'end': formulario.end.value
+            'end': formulario.end.value,
+            'hour': formulario.hour.value,
+            'dayHour': formulario.dayHour.value,
+            
         }
 
         POST_Info(rutas.crear, datos, token)

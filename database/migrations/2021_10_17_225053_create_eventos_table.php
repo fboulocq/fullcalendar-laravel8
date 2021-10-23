@@ -19,6 +19,8 @@ class CreateEventosTable extends Migration
             $table->text('descripcion');
             $table->dateTime('start');
             $table->dateTime('end');
+            $table->string('hour', 50);
+            $table->datetime('dayHour');
             $table->timestamps();
         });
     }
